@@ -1,4 +1,4 @@
-import { Fragment, ref, defineComponent, h } from "vue";
+import { Fragment, ref, defineComponent, h, computed } from "vue";
 
 export const Toggle = defineComponent({
   name: "TheToggle",
@@ -13,16 +13,16 @@ export const Toggle = defineComponent({
       default: false,
     },
     as: {
-      type: String
+      type: String,
+      default: undefined,
     },
   },
 
   emits: ["update:modelValue"],
 
-  setup(props, { slots, emit, expose }) {
-    const toggleComponentRef = ref();
-
-    const handleClick = (event: MouseEvent) => {
+  setup(props, { slots, emit }) {
+    // exposed function for manual control from parent
+    const handleToggle = (event: MouseEvent | KeyboardEvent) => {
       event.preventDefault();
       if (props.disabled) {
         return;
@@ -30,23 +30,38 @@ export const Toggle = defineComponent({
       emit("update:modelValue", !props.modelValue);
     };
 
-    const handleKeyEvents = (event: KeyboardEvent) => {
-      const spaceKey = " ";
-      if (event.key === spaceKey && !props.disabled) {
+    const handleClick = (event: MouseEvent) => {
+      if (!props.disabled && props.as !== undefined) {
         event.preventDefault();
         emit("update:modelValue", !props.modelValue);
       }
-
-      return;
     };
 
-    expose({ toggleComponentRef });
+    const handleKeyUp = (event: KeyboardEvent) => {
+      const spaceKey = " ";
+      if (event.key === spaceKey && !props.disabled && props.as !== undefined) {
+        event.preventDefault();
+        emit("update:modelValue", !props.modelValue);
+      }
+    };
+
+    const setTabIndex = computed(() => {
+      return props.as !== undefined ? 0 : -1;
+    });
+
+    const componentTag = computed(() => {
+      return props.as !== undefined ? props.as : Fragment;
+    });
 
     return () =>
       h(
-        props.as || Fragment,
-        { tabindex: 0, onKeyup: handleKeyEvents },
-        slots.default({ toggle: handleClick, disabled: props.disabled })
+        componentTag.value,
+        {
+          tabindex: setTabIndex.value,
+          onKeyup: handleKeyUp,
+          onClick: handleClick,
+        },
+        slots.default({ toggle: handleToggle, disabled: props.disabled })
       );
   },
 });
