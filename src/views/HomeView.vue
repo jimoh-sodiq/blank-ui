@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { FlowBox } from "../components/FlowBox";
+import { ref } from "vue";
+import { FlowBox } from "../components/FlowBox.ts";
+import { Toggle } from "../components/Toggle.ts";
+
+const enabled = ref(false);
+const disable = ref(false);
+
+const setDisabled = () => {
+  disable.value = !disable.value;
+};
 </script>
 
 <template>
@@ -8,9 +17,33 @@ import { FlowBox } from "../components/FlowBox";
     as="main"
     horizontal
     :vertical="true"
-    class="bg-yellow-500 w-full h-1/2 flower"
+    class="bg-yellow-500 w-full h-1/2"
   >
+    <div class="py-10">dafhkljdha</div>
   </FlowBox>
+  <Toggle :disabled="disable" v-slot="{ toggle, disabled }" v-model="enabled">
+    <span class="sr-only">Use setting</span>
+    <div
+      :class="[
+        enabled ? 'bg-teal-900' : 'bg-teal-700',
+        disabled ? 'bg-gray-700' : '',
+      ]"
+      class="relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+    >
+      <span
+        aria-hidden="true"
+        :class="enabled ? 'translate-x-9' : 'translate-x-0'"
+        class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+      />
+    </div>
+    {{ disabled + " is" }}
+
+    <div @click="toggle" class="bg-red-400">Eat Food</div>
+  </Toggle>
+
+  {{ enabled }}
+
+  <button @click="setDisabled" class="bg-green-500">Set Disabled</button>
 </template>
 
 <style scoped>
