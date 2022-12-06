@@ -1,29 +1,30 @@
-import { defineComponent, h, Fragment, computed } from "vue";
+import { defineComponent, h, Fragment, computed, onMounted, ref } from "vue";
 
 export const OtpContainer = defineComponent({
   name: "OtpContainer",
   props: {
     as: {
-      type: String,
+      type: [Object, String],
       required: false,
       default: undefined,
-    },
-    vertical: {
-      type: Boolean,
-      default: true,
-    },
-    horizontal: {
-      type: Boolean,
-      default: false,
     },
   },
 
   setup(props, { slots }) {
-    const componentTag = computed(() => {
-      return props.as !== undefined ? props.as : Fragment;
+    const inputElements = ref([]);
+    onMounted(() => {
+      if (slots.default()) {
+        for (const item of slots.default()) {
+          if (item["type"].name === "OtpInput") {
+            inputElements.value.push(item);
+          }
+        }
+      }
+      console.log(inputElements.value);
     });
 
-    return () => h("div", {}, slots);
+    const tag = Fragment;
+    return () => h(props.as || tag, slots.default({}));
   },
 });
 
@@ -31,7 +32,7 @@ export const OtpInput = defineComponent({
   name: "OtpInput",
   props: {},
 
-  setup(props, { slots }) {
+  setup() {
     return () => h("input");
   },
 });

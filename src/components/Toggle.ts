@@ -13,7 +13,7 @@ export const Toggle = defineComponent({
       default: false,
     },
     as: {
-      type: String,
+      type: [Object, String],
       default: undefined,
     },
   },
@@ -49,13 +49,13 @@ export const Toggle = defineComponent({
       return props.as !== undefined ? 0 : -1;
     });
 
-    const componentTag = computed(() => {
-      return props.as !== undefined ? props.as : Fragment;
-    });
-
+    // const componentTag = computed(() => {
+    //   return props.as !== undefined ? props.as : Fragment;
+    // });
+    const tag = Fragment;
     return () =>
       h(
-        componentTag.value,
+        props.as || tag,
         {
           tabindex: setTabIndex.value,
           onKeyup: handleKeyUp,

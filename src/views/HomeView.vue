@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { FlowBox } from "../components/FlowBox.ts";
-import { Toggle } from "../components/Toggle.ts";
+import { OtpContainer, OtpInput } from "@/components/Otp";
+// import { FlowBox } from "../components/FlowBox.ts";
+// import { Toggle } from "../components/Toggle.ts";
 
-const enabled = ref(true);
-const disable = ref(false);
+// const enabled = ref(true);
+// const disable = ref(false);
 
-const setDisabled = () => {
-  disable.value = !disable.value;
-};
+// const setDisabled = () => {
+//   disable.value = !disable.value;
+// };
 </script>
 
 <template>
@@ -21,7 +22,7 @@ const setDisabled = () => {
   >
     <div class="py-10">dafhkljdha</div>
   </FlowBox> -->
-  <Toggle
+  <!-- <Toggle
     :disabled="disable"
     v-slot="{ toggle, disabled }"
     v-model="enabled"
@@ -43,8 +44,8 @@ const setDisabled = () => {
     {{ disabled + " is" }}
 
     <button @click="toggle" class="bg-red-400">toggle</button>
-  </Toggle>
-  <Toggle
+  </Toggle> -->
+  <!-- <Toggle
     as="button"
     :disabled="disable"
     v-model="enabled"
@@ -58,11 +59,20 @@ const setDisabled = () => {
       :class="enabled ? 'translate-x-9' : 'translate-x-0'"
       class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
     />
-  </Toggle>
+  </Toggle> -->
 
-  {{ enabled }}
+  <!-- {{ enabled }} -->
 
-  <button @click="setDisabled" class="bg-green-500">Set Disabled</button>
+  <!-- <button @click="setDisabled" class="bg-green-500">Set Disabled</button> -->
+
+  <OtpContainer class="">
+    <OtpInput
+      class="border rounded-full bg-gray-500 text-white px-4 py-2 outline-none"
+    />
+    <OtpInput
+      class="border rounded-full bg-gray-500 text-white px-4 py-2 outline-none"
+    />
+  </OtpContainer>
 </template>
 
 <style scoped>
