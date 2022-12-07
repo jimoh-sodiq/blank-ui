@@ -65,13 +65,18 @@ import { OtpContainer, OtpInput } from "@/components/Otp";
 
   <!-- <button @click="setDisabled" class="bg-green-500">Set Disabled</button> -->
 
-  <OtpContainer class="">
+  <OtpContainer>
     <OtpInput
+      :input-id="1"
+      type="password"
       class="border rounded-full bg-gray-500 text-white px-4 py-2 outline-none"
     />
+    *
     <OtpInput
+      :input-id="2"
       class="border rounded-full bg-gray-500 text-white px-4 py-2 outline-none"
     />
+    <p>Helllo there</p>
   </OtpContainer>
 </template>
 
@@ -79,9 +84,5 @@ import { OtpContainer, OtpInput } from "@/components/Otp";
 .flower {
   height: 50vh;
   background-color: yellow;
-}
-
-p {
-  margin: 200px 0;
 }
 </style>
