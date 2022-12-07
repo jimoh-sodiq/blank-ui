@@ -10,6 +10,8 @@ import { OtpContainer, OtpInput } from "@/components/Otp";
 // const setDisabled = () => {
 //   disable.value = !disable.value;
 // };
+
+const otp = ref("");
 </script>
 
 <template>
@@ -65,19 +67,25 @@ import { OtpContainer, OtpInput } from "@/components/Otp";
 
   <!-- <button @click="setDisabled" class="bg-green-500">Set Disabled</button> -->
 
-  <OtpContainer>
+  <OtpContainer v-model="otp" as="div" class="flex items-center gap-x-3">
+    -
     <OtpInput
-      :input-id="1"
-      type="password"
-      class="border rounded-full bg-gray-500 text-white px-4 py-2 outline-none"
+      type="number"
+      class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
-    *
+    -
     <OtpInput
-      :input-id="2"
-      class="border rounded-full bg-gray-500 text-white px-4 py-2 outline-none"
+      type="password"
+      class="border w-12 text-center disabled:cursor-not-allowed disabled:bg-red-400 rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
+    />
+    -
+    <OtpInput
+      class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
     <p>Helllo there</p>
   </OtpContainer>
+
+  {{ otp }}
 </template>
 
 <style scoped>
