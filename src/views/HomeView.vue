@@ -67,7 +67,12 @@ const otp = ref("");
 
   <!-- <button @click="setDisabled" class="bg-green-500">Set Disabled</button> -->
 
-  <OtpContainer v-model="otp" as="div" class="flex items-center gap-x-3">
+  <OtpContainer
+    v-slot="clearAll"
+    v-model="otp"
+    as="div"
+    class="flex items-center gap-x-3"
+  >
     <OtpInput
       type="number"
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
@@ -83,7 +88,12 @@ const otp = ref("");
     <OtpInput
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
-    <p>Helllo there</p>
+    <button
+      class="bg-green-700 text-white font-semibold text-sm p-2 rounded hover:opacity-95"
+      @clcik.prevent="clearAll"
+    >
+      Clear All
+    </button>
   </OtpContainer>
 
   {{ otp }}

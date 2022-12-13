@@ -100,6 +100,12 @@ export const OtpContainer = defineComponent({
       return;
     };
 
+    const clearAll = () => {
+      console.log("all cleared");
+      otpHandler.value = new Array(slots.default().length).fill("");
+      emit("update:modelValue", otpValue.value);
+    };
+
     const handlePasteInput = async (event: ClipboardEvent) => {
       const clipboardText = await navigator.clipboard.readText();
       const otpLength = otpInputIndexLsit.value.length;
@@ -136,25 +142,28 @@ export const OtpContainer = defineComponent({
 
     const tag = Fragment;
     return () =>
-      h(
-        props.as || tag,
+      h(props.as || tag, [
         slots.default().map((slot: any, i: number) => {
           return slot.type === OtpInput
-            ? h("input", {
-                onKeyup: (event: KeyboardEvent) => handleKeyup(event, i),
-                onInput: (event: InputEvent) => handleInput(event, i),
-                onPaste: (event: ClipboardEvent) => handlePasteInput(event),
-                ref: (el) => {
-                  otpInputRefs.value[i] = el;
+            ? h(
+                "input",
+                {
+                  onKeyup: (event: KeyboardEvent) => handleKeyup(event, i),
+                  onInput: (event: InputEvent) => handleInput(event, i),
+                  onPaste: (event: ClipboardEvent) => handlePasteInput(event),
+                  ref: (el) => {
+                    otpInputRefs.value[i] = el;
+                  },
+                  disabled: slot.props.disabled,
+                  class: slot.props.class,
+                  type: slot.props.type,
+                  value: otpHandler.value[i],
                 },
-                disabled: slot.props.disabled,
-                class: slot.props.class,
-                type: slot.props.type,
-                value: otpHandler.value[i],
-              })
+                { name: "sodiq" }
+              )
             : h(slot);
-        })
-      );
+        }),
+      ]);
   },
 });
 
