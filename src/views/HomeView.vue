@@ -68,17 +68,18 @@ const otp = ref("");
   <!-- <button @click="setDisabled" class="bg-green-500">Set Disabled</button> -->
 
   <OtpContainer v-model="otp" as="div" class="flex items-center gap-x-3">
-    -
     <OtpInput
       type="number"
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
-    -
     <OtpInput
+      disabled
       type="password"
       class="border w-12 text-center disabled:cursor-not-allowed disabled:bg-red-400 rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
-    -
+    <OtpInput
+      class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
+    />
     <OtpInput
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />

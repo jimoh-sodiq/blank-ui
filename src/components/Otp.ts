@@ -29,13 +29,22 @@ export const OtpContainer = defineComponent({
       return otpHandler.value.join("");
     });
 
+    const otpInputIndexLsit = computed(() => {
+      const indexes: number[] = [];
+      otpInputRefs.value.forEach((el, index) => {
+        if (otpInputRefs.value[index] !== "") {
+          indexes.push(index);
+        }
+      });
+      return indexes;
+    });
+
     const handleInput = (e: InputEvent, index: number) => {
       const targetValue = (e.target as HTMLInputElement).value;
       const temporalOtp = [...otpHandler.value];
       temporalOtp[index] = targetValue.substring(targetValue.length - 1);
       otpHandler.value = temporalOtp;
       emit("update:modelValue", otpValue.value);
-      // console.log(otpHandler.value);
     };
 
     const handleKeyup = (e: KeyboardEvent, index: number) => {
@@ -45,7 +54,6 @@ export const OtpContainer = defineComponent({
       ) {
         e.preventDefault();
         focusNext(index);
-        // console.log(otpInputRefs.value[index]);
       }
       if (otpInputRefs.value[index].value) {
         e.preventDefault();
@@ -58,12 +66,10 @@ export const OtpContainer = defineComponent({
       ) {
         e.preventDefault();
         focusPrev(index);
-        // console.log(otpInputRefs.value[index]);
       }
       if (!otpInputRefs.value[index].value && e.key === "Backspace") {
         e.preventDefault();
         focusPrev(index);
-        // console.log(otpInputRefs.value[index]);
       }
     };
 
@@ -94,24 +100,39 @@ export const OtpContainer = defineComponent({
       return;
     };
 
-    console.log(otpInputRefs.value);
-    // onMounted(() => {
-    //   inputCount.value;
-    //   if (slots.default()) {
-    //     for (const item of slots.default()) {
-    //       if (item["type"].name === "OtpInput") {
-    //         inputElements.value.push(item);
-    //       }
-    //     }
-    //   }
-    // });
-
-    // const inputs = slots
-    //   .default()
-    //   .filter((slot: VNode) => slot.type === OtpInput)
-    //   .map((input: VNode) => {
-    //     return h(input, { onInput: handleClick });
-    //   });
+    const handlePasteInput = async (event: ClipboardEvent) => {
+      const clipboardText = await navigator.clipboard.readText();
+      const otpLength = otpInputIndexLsit.value.length;
+      const shortClipboardText = clipboardText.trim().substring(0, otpLength);
+      otpInputIndexLsit.value.forEach((index, idx) => {
+        otpHandler.value[index];
+        if (
+          shortClipboardText[idx] !== "" &&
+          otpInputRefs.value[index].type === "number" &&
+          !otpInputRefs.value[index].disabled &&
+          typeof shortClipboardText[idx] === "number"
+        ) {
+          otpHandler.value[index] = +shortClipboardText[idx];
+        } else if (
+          typeof shortClipboardText[idx] === "string" &&
+          !otpInputRefs.value[index].disabled &&
+          otpInputRefs.value[index].type === "number" &&
+          shortClipboardText[idx] !== ""
+        ) {
+          otpHandler.value[index] = +shortClipboardText[idx]
+            ? +shortClipboardText[idx]
+            : "";
+          otpInputRefs.value[index].value = "";
+        } else if (
+          shortClipboardText[idx] !== "" &&
+          !otpInputRefs.value[index].disabled &&
+          otpInputRefs.value[index].type !== "number"
+        ) {
+          otpHandler.value[index] = shortClipboardText[idx];
+        }
+      });
+      emit("update:modelValue", otpValue.value);
+    };
 
     const tag = Fragment;
     return () =>
@@ -122,6 +143,7 @@ export const OtpContainer = defineComponent({
             ? h("input", {
                 onKeyup: (event: KeyboardEvent) => handleKeyup(event, i),
                 onInput: (event: InputEvent) => handleInput(event, i),
+                onPaste: (event: ClipboardEvent) => handlePasteInput(event),
                 ref: (el) => {
                   otpInputRefs.value[i] = el;
                 },
