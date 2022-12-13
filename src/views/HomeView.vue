@@ -2,14 +2,14 @@
 import { ref } from "vue";
 import { OtpContainer, OtpInput } from "@/components/Otp";
 // import { FlowBox } from "../components/FlowBox.ts";
-// import { Toggle } from "../components/Toggle.ts";
+import { Toggle } from "../components/Toggle.ts";
 
-// const enabled = ref(true);
-// const disable = ref(false);
+const enabled = ref(true);
+const disable = ref(false);
 
-// const setDisabled = () => {
-//   disable.value = !disable.value;
-// };
+const setDisabled = () => {
+  disable.value = !disable.value;
+};
 
 const otp = ref("");
 </script>
@@ -24,7 +24,7 @@ const otp = ref("");
   >
     <div class="py-10">dafhkljdha</div>
   </FlowBox> -->
-  <!-- <Toggle
+  <Toggle
     :disabled="disable"
     v-slot="{ toggle, disabled }"
     v-model="enabled"
@@ -46,7 +46,7 @@ const otp = ref("");
     {{ disabled + " is" }}
 
     <button @click="toggle" class="bg-red-400">toggle</button>
-  </Toggle> -->
+  </Toggle>
   <!-- <Toggle
     as="button"
     :disabled="disable"
@@ -67,33 +67,30 @@ const otp = ref("");
 
   <!-- <button @click="setDisabled" class="bg-green-500">Set Disabled</button> -->
 
-  <OtpContainer
-    v-slot="clearAll"
-    v-model="otp"
-    as="div"
-    class="flex items-center gap-x-3"
-  >
+  <OtpContainer v-model="otp" as="div" class="flex items-center gap-x-3">
     <OtpInput
-      type="number"
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
+    +
     <OtpInput
       disabled
       type="password"
-      class="border w-12 text-center disabled:cursor-not-allowed disabled:bg-red-400 rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
+      class="border w-12 text-center disabled:cursor-not-allowed disabled:bg-red-400 rounded-md text-white px-1 py-2 outline-none focus:bg-green-500"
     />
+    +
     <OtpInput
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
+    +
     <OtpInput
       class="border w-12 text-center rounded-md bg-gray-500 text-white px-1 py-2 outline-none focus:bg-green-500"
     />
-    <button
+    <!-- <button
       class="bg-green-700 text-white font-semibold text-sm p-2 rounded hover:opacity-95"
       @clcik.prevent="clearAll"
     >
       Clear All
-    </button>
+    </button> -->
   </OtpContainer>
 
   {{ otp }}
